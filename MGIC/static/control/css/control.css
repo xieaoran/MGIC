@@ -1,0 +1,23 @@
+.work {
+    padding: 10px;
+}
+
+.work .work-id {
+    display: none;
+}
+
+.work:hover {
+    background-color: #464646;
+}
+
+.work.selected {
+    background-color: #595959;
+}
+
+.win-flyout{
+    color: #ffffff;
+}
+
+.win-flyout button{
+    margin-top: 10px;
+}

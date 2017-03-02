@@ -1,0 +1,16 @@
+.server-info p{
+    margin-bottom: 5px !important;
+}
+
+.server-info h1, .server-info h2, .server-info h3{
+    margin-bottom: 10px !important;
+}
+
+.server-info progress{
+    vertical-align: middle !important;
+    margin-right: 5px;
+}
+.server-info img{
+    width: 100%;
+    height: auto;
+}

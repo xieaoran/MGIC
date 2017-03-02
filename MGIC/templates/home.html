@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block head %}
+    <link href="{% static 'home/css/home.css' %}" rel="stylesheet"/>
+    <script type="text/javascript"
+            src="https://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0&s=1&mkt=zh-hk"></script>
+    <script src="{% static 'home/js/home.js' %}"></script>
+{% endblock %}
+{% block script_resize %}
+    Home.Resize();
+{% endblock %}
+{% block script_after %}
+    Home.Load();
+{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="first-row row">
+            <div class="col-md-12">
+                <h1 class="win-h1">Materials Genome Initiative Cloud</h1>
+            </div>
+        </div>
+        <div class="row no-space">
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-12 border">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="win-h3">服务状态</h3>
+                            </div>
+                        </div>
+                        <div class="row last-row">
+                            <div class="col-md-12">
+                                <div id="statusMap"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-12 border">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="win-h3">服务器信息</h3>
+                            </div>
+                        </div>
+                        <div id="serverInfoTemplate" data-win-control="WinJS.Binding.Template">
+                            <div class="row server-info">
+                                <div class="col-md-4">
+                                    <img src="{% static 'images/server.png' %}" data-win-bind="alt: Name"/>
+                                </div>
+                                <div class="col-md-8">
+                                    <h3 class="win-h3"><span data-win-bind="textContent: Name"></span> 节点</h3>
+
+                                    <p>IP地址：<span data-win-bind="textContent: IPAddress"></span></p>
+
+                                    <p>当前状态：<span data-win-bind="textContent: RunningState;
+                                            style.background: RunningState Common.RunningStateToColor"
+                                            style="font-weight: bolder"></span>
+                                    </p>
+
+                                    <p>CPU负载：<label class="progressRingText">
+                                        <progress class="withText" data-win-bind="value: CPULoad" max="100"></progress>
+                                        <span data-win-bind="textContent: CPULoad"></span>%</label></p>
+                                    <p>内存负载：<label>
+                                        <progress class="withText"
+                                                  data-win-bind="value: MemoryLoad; max: TotalMemory"></progress>
+                                        <span data-win-bind="textContent: MemoryLoad"></span> MB / <span
+                                            data-win-bind="textContent: TotalMemory"></span> MB</label></p>
+                                    <p>上次刷新时间：<span data-win-bind="textContent: LastRefresh"></span></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="serverInfo"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

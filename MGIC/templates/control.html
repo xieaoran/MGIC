@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block head %}
+    <link href="{% static 'common/css/pivot.css' %}" rel="stylesheet"/>
+    <link href="{% static 'control/css/control.css' %}" rel="stylesheet"/>
+    <script src="{% static 'control/js/control.js' %}"></script>
+{% endblock %}
+{% block script_resize %}
+    Control.Resize();
+{% endblock %}
+{% block script_after %}
+    Control.Load();
+{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <div id="head" class="first-row row">
+            <div class="col-md-12">
+                <h1 class="win-h1">Materials Genome Initiative Cloud</h1>
+            </div>
+        </div>
+        <div class="row no-space">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12 border">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="win-h3">工作项</h3>
+                            </div>
+                        </div>
+                        <div class="row last-row">
+                            <div class="col-md-12">
+                                <div id="workTemplate" data-win-control="WinJS.Binding.Template">
+                                    <div class="work" onclick="Control.SelectWork(this);">
+                                        <div class="work-id" data-win-bind="textContent: Id"></div>
+                                        <p>名称：<span data-win-bind="textContent: Name"></span></p>
+                                        <p>位置：<span data-win-bind="textContent: Location"></span></p>
+                                        <p>实例大小：<span data-win-bind="textContent: WorkSize"></span></p>
+                                        <p>状态：<span class="work-state" data-win-bind="textContent: WorkState Control.WorkStateToString;
+                                        style.color: WorkState Control.WorkStateToColor" style="font-weight: bolder"></span></p>
+                                    </div>
+                                </div>
+                                <div id="workList" data-win-control="WinJS.UI.Pivot">
+                                    <div class="pivotItem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ 'header': '全部' }">
+                                        <div data-win-control="WinJS.UI.Repeater" data-win-options="{ data: Control.WorksAll, template: select('#workTemplate') }"></div>
+                                    </div>
+
+                                    <div class="pivotItem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ 'header': '未上传文件' }">
+                                        <div data-win-control="WinJS.UI.Repeater" data-win-options="{ data: Control.WorksUpload, template: select('#workTemplate') }"></div>
+                                    </div>
+
+                                    <div class="pivotItem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ 'header': '等待中' }">
+                                        <div data-win-control="WinJS.UI.Repeater" data-win-options="{ data: Control.WorksWaiting, template: select('#workTemplate') }"></div>
+                                    </div>
+
+                                    <div class="pivotItem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ 'header': '处理中' }">
+                                        <div data-win-control="WinJS.UI.Repeater" data-win-options="{ data: Control.WorksProcessing, template: select('#workTemplate') }"></div>
+                                    </div>
+
+                                    <div class="pivotItem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ 'header': '已完成' }">
+                                        <div data-win-control="WinJS.UI.Repeater" data-win-options="{ data: Control.WorksFinished, template: select('#workTemplate') }"></div>
+                                    </div>
+
+                                    <div class="pivotItem" data-win-control="WinJS.UI.PivotItem" data-win-options="{ 'header': '错误' }">
+                                        <div data-win-control="WinJS.UI.Repeater" data-win-options="{ data: Control.WorksError, template: select('#workTemplate') }"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block other_controls %}
+    <div id="downloadFlyout" data-win-control="WinJS.UI.Flyout">
+        <div>请单击下面的按钮以取回计算结果。</div>
+        <button class="win-button" id="confirmButton" onclick="Control.GetWork();">取回</button>
+    </div>
+    <div id="uploadFlyout" data-win-control="WinJS.UI.Flyout">
+        <div>请单击下面的按钮以上传源文件。</div>
+        <button class="win-button" id="uploadButton" onclick="Control.UploadWork();">上传</button>
+    </div>
+{% endblock %}

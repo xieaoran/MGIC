@@ -1,0 +1,176 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="{% static 'frameworks/winjs/css/ui-dark.css' %}" rel="stylesheet"/>
+    <link href="{% static 'frameworks/bootstrap/bootstrap.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'frameworks/uploadifive/uploadifive.css' %}" rel="stylesheet"/>
+    <link href="{% static 'common/css/common.css' %}" rel="stylesheet"/>
+    <link href="{% static 'common/css/splitview.css' %}" rel="stylesheet"/>
+    <script src="{% static 'frameworks/winjs/js/base.min.js' %}"></script>
+    <script src="{% static 'frameworks/winjs/js/ui.min.js' %}"></script>
+    <script src="{% static 'frameworks/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'frameworks/jquery/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'frameworks/jquery/jquery.color.min.js' %}"></script>
+    <script src="{% static 'frameworks/jquery/jquery.json.min.js' %}"></script>
+    <script src="{% static 'frameworks/jquery/js.cookie.js' %}"></script>
+    <script src="{% static 'frameworks/uploadifive/jquery.uploadifive.min.js' %}"></script>
+    <script src="{% static 'frameworks/sha256/sha256.js' %}"></script>
+    {% block head %}
+    {% endblock %}
+</head>
+<body onresize="{% block script_resize %}{% endblock %}">
+<script type="text/javascript">
+    {% block script_before %}
+    {% endblock %}
+</script>
+<div id="serverSelectTemplate" data-win-control="WinJS.Binding.Template">
+    <option data-win-bind="value: Id; textContent: Name"></option>
+</div>
+<div id="workSizeSelectTemplate" data-win-control="WinJS.Binding.Template">
+    <option data-win-bind="value: Id; textContent: Name"></option>
+</div>
+<div id="contractSizeSelectTemplate" data-win-control="WinJS.Binding.Template">
+    <option data-win-bind="value: Id; textContent: Name"></option>
+</div>
+<div id="loginDialog" data-win-control="WinJS.UI.ContentDialog" data-win-options="{
+            primaryCommandText: '登录', secondaryCommandText: '取消'}">
+    <div class="row first-row">
+        <h3 class="win-h3">登录</h3>
+    </div>
+    <div class="row">
+        <div class="label">用户名</div>
+        <label class="control"><input id="loginUsername" type="text"></label>
+    </div>
+    <div class="row">
+        <div class="label">密码</div>
+        <label class="control"><input id="loginPassword" type="password"></label>
+    </div>
+</div>
+<div id="registerDialog" data-win-control="WinJS.UI.ContentDialog" data-win-options="{
+            primaryCommandText: '注册', secondaryCommandText: '取消'}">
+    <div class="row first-row">
+        <h3 class="win-h3">注册</h3>
+    </div>
+    <div class="row">
+        <div class="label">用户名</div>
+        <label class="control"><input id="regUsername" type="text"></label>
+    </div>
+    <div class="row">
+        <div class="label">密码</div>
+        <label class="control"><input id="regPassword" type="password"></label>
+    </div>
+    <div class="row">
+        <div class="label">契约大小</div>
+        <label class="control"><select id="contractSizeSelect"></select></label>
+    </div>
+</div>
+<div id="logoutDialog" data-win-control="WinJS.UI.ContentDialog" data-win-options="{
+            primaryCommandText: '确定', secondaryCommandText: '取消'}">
+    <div class="row first-row">
+        <h3 class="win-h3">注销</h3>
+    </div>
+    <div class="row">
+        <p>确定要注销吗？</p>
+    </div>
+</div>
+<div id="errorDialog" data-win-control="WinJS.UI.ContentDialog" data-win-options="{
+            primaryCommandText: '确认'}">
+    <div class="row first-row">
+        <h3 class="win-h3">错误</h3>
+    </div>
+    <div class="row">
+        <p id="errorMessage"></p>
+    </div>
+</div>
+<div id="successDialog" data-win-control="WinJS.UI.ContentDialog" data-win-options="{
+            primaryCommandText: '确认'}">
+    <div class="row first-row">
+        <h3 class="win-h3">成功</h3>
+    </div>
+    <div class="row">
+        <p id="successMessage"></p>
+    </div>
+</div>
+<div id="newWorkDialogBasic" data-win-control="WinJS.UI.ContentDialog" data-win-options="{
+             primaryCommandText: '下一步', secondaryCommandText: '取消'}">
+    <div class="row first-row">
+        <h3 class="win-h3">新任务</h3>
+    </div>
+    <div class="row">
+        <div class="label">任务名</div>
+        <label class="control"><input id="name" type="text"></label>
+    </div>
+    <div class="row">
+        <div class="label">节点</div>
+        <label class="control"><select id="serverSelect"></select></label>
+    </div>
+    <div class="row">
+        <div class="label">实例大小</div>
+        <label class="control"><select id="workSizeSelect"></select></label>
+    </div>
+    <div class="row">
+        <div class="label"></div>
+    </div>
+</div>
+<div id="newWorkDialogUpload" data-win-control="WinJS.UI.ContentDialog" data-win-options="{
+             primaryCommandText: '取消'}">
+    <div class="row first-row">
+        <h3 class="win-h3">新任务</h3>
+    </div>
+    <div class="row">
+        <div>任务文件</div>
+    </div>
+    <div class="row">
+        <div>请将任务文件打包为zip格式的压缩文件，并在此上传。</div>
+    </div>
+    <div class="row">
+        <label><input id="workFileUpload" type="file"></label>
+    </div>
+</div>
+
+{% block add_dialogs %}
+{% endblock %}
+<div class="splitView" data-win-control="WinJS.UI.SplitView">
+    <div id="pane">
+        <div class="header">
+            <button class="win-splitviewpane-toggle"
+                    data-win-control="WinJS.UI.SplitViewPaneToggle"
+                    data-win-options="{ splitView: select('.splitView') }"></button>
+            <div class="title">MGIC</div>
+        </div>
+        <div class="nav-commands">
+            <a data-win-control="WinJS.UI.NavBarCommand"
+                 data-win-options="{ label: '首页', icon: 'home'}" href="/home/"></a>
+            {% if user == None %}
+                <div data-win-control="WinJS.UI.NavBarCommand"
+                     data-win-options="{ label: '登录', icon: 'permissions', onclick: LoginDialog.Show}"></div>
+                <div data-win-control="WinJS.UI.NavBarCommand"
+                     data-win-options="{ label: '注册', icon: 'addfriend', onclick: RegisterDialog.Show}"></div>
+            {% else %}
+                <a data-win-control="WinJS.UI.NavBarCommand"
+                     data-win-options="{ label: '控制台', icon: 'remote'}" href="/control/"></a>
+                <div data-win-control="WinJS.UI.NavBarCommand"
+                   data-win-options="{ label: '新任务', icon: 'add', onclick: NewWorkDialog.Show}"></div>
+                <div class="place-bottom" data-win-control="WinJS.UI.NavBarCommand"
+                     data-win-options="{ label: '{{ user.UserName }}', icon: 'contact', onclick: LogoutDialog.Show}"></div>
+            {% endif %}
+        </div>
+    </div>
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+{% csrf_token %}
+{% block other_controls %}
+{% endblock %}
+</body>
+<script src="{% static 'common/js/common.js' %}"></script>
+<script type="text/javascript">
+    {% block script_after %}
+    {% endblock %}
+</script>
+</html>

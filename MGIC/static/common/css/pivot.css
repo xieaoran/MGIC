@@ -1,0 +1,30 @@
+/*
+ * Created by Robert Xie
+ * © 2015 HIT Microsoft Club
+ * All Rights Reserved
+ */
+
+.win-pivot-headers{
+    margin-left: 0 !important;
+    height: 36px !important;
+}
+
+.win-pivot-headers > .win-pivot-header{
+    font-size: 20px !important;
+    font-weight: bolder !important;
+    margin: 0 12px !important;
+}
+
+.win-pivot-item .win-pivot-item-content{
+    padding: 0 12px;
+}
+
+@media(max-width: 992px){
+    .win-pivot-header{
+        font-size: 4.0rem !important;
+        height: 100% !important;
+    }
+    .win-pivot-headers{
+        height: 100% !important;
+    }
+}
